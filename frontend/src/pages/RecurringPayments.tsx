@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { IndianRupee, Trash2, Calendar, Tag, PlusCircle, RefreshCw, Edit2, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import api from '../api/axios';
 import Layout from '../components/Layout';
+import { getLocalDateString } from '../utils/dateUtils';
 
 const RecurringPayments = () => {
   const [recurringList, setRecurringList] = useState<any[]>([]);
@@ -17,7 +18,7 @@ const RecurringPayments = () => {
   const [amount, setAmount] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [frequency, setFrequency] = useState('Monthly');
-  const [nextPaymentDate, setNextPaymentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [nextPaymentDate, setNextPaymentDate] = useState(getLocalDateString());
 
   const userId = localStorage.getItem('userId');
 
@@ -52,14 +53,14 @@ const RecurringPayments = () => {
       setAmount(item.amount ? String(item.amount) : '');
       setCategoryId(item.category?.id || (categories.length > 0 ? categories[0].id : ''));
       setFrequency(item.frequency || 'Monthly');
-      setNextPaymentDate(item.nextPaymentDate || new Date().toISOString().split('T')[0]);
+      setNextPaymentDate(item.nextPaymentDate || getLocalDateString());
     } else {
       setEditingId(null);
       setName('');
       setAmount('');
       setCategoryId(categories.length > 0 ? categories[0].id : '');
       setFrequency('Monthly');
-      setNextPaymentDate(new Date().toISOString().split('T')[0]);
+      setNextPaymentDate(getLocalDateString());
     }
     setIsModalOpen(true);
   };
@@ -137,7 +138,7 @@ const RecurringPayments = () => {
     return sum + amt; // monthly
   }, 0);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalDateString();
 
   return (
     <Layout>

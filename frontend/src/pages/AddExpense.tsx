@@ -3,31 +3,43 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import Layout from '../components/Layout';
 
+import { getLocalDateString } from '../utils/dateUtils';
+
 const AddExpense = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [amount, setAmount] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Defaults to today
-  
+  const [date, setDate] = useState(getLocalDateString()); // Defaults to today
+
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
 
   // Fetch categories when the page loads
   useEffect(() => {
+    console.log("===== AddExpense mounted =====");
+    console.log("userId =", userId);
+
     const fetchCategories = async () => {
+      console.log("Calling categories API...");
+
       try {
         const response = await api.get(`/categories/user/${userId}`);
+
+        console.log("SUCCESS", response);
+
         setCategories(response.data);
+
         if (response.data.length > 0) {
-          setCategoryId(response.data[0].id); // Select first category by default
+          setCategoryId(response.data[0].id.toString());
         }
-      } catch (error) {
-        console.error('Failed to fetch categories', error);
+      } catch (e) {
+        console.error("CATEGORY ERROR", e);
       }
     };
-    if (userId) fetchCategories();
-  }, [userId]);
+
+    fetchCategories();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AlertCircle, IndianRupee, TrendingUp, Tag, Calendar, ArrowRight, List, PlusCircle, Edit3, Check, X, Wallet } from 'lucide-react';
 import api from '../api/axios';
 import Layout from '../components/Layout';
+import { getLocalDateString } from '../utils/dateUtils';
 
 const Dashboard = () => {
   const [limitProgress, setLimitProgress] = useState<string>('Loading budget status...');
@@ -61,7 +62,7 @@ const Dashboard = () => {
     fetchDashboardData();
   }, [userId]);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalDateString();
   const totalSpentToday = expenses
     .filter((e) => e.date === todayStr)
     .reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
