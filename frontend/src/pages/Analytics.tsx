@@ -16,7 +16,6 @@ import {
 import api from '../api/axios';
 import Layout from '../components/Layout';
 import { exportToPDF, exportToExcel } from '../utils/exportUtils';
-import { getLocalDateString } from '../utils/dateUtils';
 
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#F97316'];
 
@@ -202,7 +201,7 @@ const Analytics = () => {
   return (
     <Layout>
       <div className="space-y-8">
-        
+
         {/* Header & Tabs */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -223,19 +222,18 @@ const Analytics = () => {
                   tabKey === 'weekly'
                     ? 'Weekly'
                     : tabKey === 'monthly'
-                    ? 'Monthly'
-                    : tabKey === 'yearly'
-                    ? 'Yearly'
-                    : '5-Year';
+                      ? 'Monthly'
+                      : tabKey === 'yearly'
+                        ? 'Yearly'
+                        : '5-Year';
                 return (
                   <button
                     key={tabKey}
                     onClick={() => setActiveTab(tabKey)}
-                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition whitespace-nowrap ${
-                      activeTab === tabKey
+                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition whitespace-nowrap ${activeTab === tabKey
                         ? 'bg-white text-blue-600 shadow-sm'
                         : 'text-gray-600 hover:text-gray-900'
-                    }`}
+                      }`}
                   >
                     {label}
                   </button>
