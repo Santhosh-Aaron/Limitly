@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: limitly-db
+    environment:
+      POSTGRES_USER: limitly_admin
+      POSTGRES_PASSWORD: limitly_password
+      POSTGRES_DB: limitly
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persists data even if the container is destroyed
+      - limitly_pg_data:/var/lib/postgresql/data
+      # Mounts the init script to run automatically
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+volumes:
+  limitly_pg_data:
